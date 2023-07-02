@@ -1,0 +1,31 @@
+﻿@using UI.Features.Counter.State;
+@using UI.Features.Forecast.State;
+@inject IState<CounterState> CounterState
+@inject IState<ForecastState> ForecastState
+@inject ISnackbar Snackbar
+
+@inherits FluxorComponent
+@implements IDisposable
+
+<MudNavMenu Bordered="true">
+    <MudNavLink Href="/" Match="NavLinkMatch.All">Home</MudNavLink>
+    <MudNavLink Href="/counter" Match="NavLinkMatch.Prefix">Counter (@CounterState.Value.CurrentCount)</MudNavLink>
+    <MudNavLink Href="/weatherforecast" Match="NavLinkMatch.Prefix"><span style="@WeatherItemStyle">Weather Forecast</span></MudNavLink>
+</MudNavMenu>
+
+@code{
+
+    private string WeatherItemStyle => ForecastState.Value.IsLoading ? "font-weight:bold;color:var(--mud-palette-primary);" : "";
+
+    protected override void OnInitialized()
+    {
+        // Subscribe to ForecastSetAction and show a toast when forecasts are loaded
+        SubscribeToAction<ForecastSetAction>((_) =>
+        {
+            Snackbar.Add("Weather forecasts have been loaded", Severity.Success);
+        });
+
+        base.OnInitialized();
+    }
+
+}

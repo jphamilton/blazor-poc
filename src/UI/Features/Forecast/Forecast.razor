@@ -1,0 +1,74 @@
+﻿@page "/weatherforecast"
+@using UI.Features.Forecast.State;
+
+@inject IDispatcher Dispatcher
+@inject IState<ForecastState> Store
+
+@inherits FluxorComponent
+
+<PageTitle>Weather forecast</PageTitle>
+
+<h1>Weather forecast</h1>
+
+@if (Initialized)
+{
+    <p>Forecasts are available from the Store.</p>
+}
+else
+{
+    <p>Loading forecasts from the Weather Service.</p>
+}
+
+@if (IsLoading)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <p>
+        <MudDataGrid Items="@forecasts">
+            <Columns>
+                <PropertyColumn Property="x => x.Date">
+                    <CellTemplate>
+                        @context.Item.Date.ToShortDateString()
+                    </CellTemplate>
+                </PropertyColumn>
+                <PropertyColumn Property="x => x.TemperatureC" Title="Temp. (C)" />
+                <PropertyColumn Property="x => x.TemperatureF" Title="Temp. (F)" />
+                <PropertyColumn Property="x => x.Summary" />
+            </Columns>
+        </MudDataGrid>
+    </p>
+    <br/>
+    <p>
+        <div>
+            <MudButton Variant="Variant.Filled" Color="Color.Primary" @onclick="LoadForecasts">Refresh</MudButton>
+        </div>
+    </p>
+
+}
+
+@code {
+    private List<WeatherForecast> forecasts => Store.Value.Forecasts;
+    public bool Initialized => Store.Value.Initialized;
+    public bool IsLoading => Store.Value.IsLoading;
+
+    protected override void OnInitialized()
+    {
+        if (!forecasts.Any())
+        {
+            LoadForecasts();
+        }
+
+        // THIS IS REQUIRED
+        base.OnInitialized();
+    }
+
+    private void LoadForecasts()
+    {
+        // Flow is Action -> Effect -> Reducer -> State -> UI
+        // Server is called in ForecastEffects
+        Dispatcher.Dispatch(new ForecastGetAction());
+    }
+    
+}

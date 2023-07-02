@@ -1,0 +1,15 @@
+syntax = "proto3";
+
+option csharp_namespace = "Grpc.Gateway.Service";
+
+package gateway;
+
+service Gateway {
+  rpc Publish (GatewayEnvelope) returns (GatewayEnvelope);
+}
+
+message GatewayEnvelope {
+  string Type = 1;
+  string Body = 2;
+}
+

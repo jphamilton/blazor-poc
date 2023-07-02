@@ -1,0 +1,24 @@
+syntax = "proto3";
+
+option csharp_namespace = "Grpc.WeatherForecast.Service";
+
+import "google/protobuf/timestamp.proto";
+import "google/protobuf/empty.proto";
+
+package forecast;
+
+// The greeting service definition.
+service ForecastService {
+  // Sends a greeting
+  rpc GetForecasts (google.protobuf.Empty) returns (ForecastList);
+}
+
+message WeatherForecastMessage {
+  google.protobuf.Timestamp Date = 1;
+  int32 TemperatureC = 2;
+  string Summary = 4;
+}
+
+message ForecastList {
+    repeated WeatherForecastMessage Forecasts = 1;
+}

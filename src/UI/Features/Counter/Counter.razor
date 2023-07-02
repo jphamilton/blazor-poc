@@ -1,0 +1,23 @@
+﻿@page "/counter"
+@using UI.Features.Counter.State
+@inject IDispatcher Dispatcher
+@inject IState<CounterState> CounterState
+
+@inherits FluxorComponent
+
+<PageTitle>Counter</PageTitle>
+
+<h1>Counter</h1>
+
+<p role="status">Current count: @CurrentCount</p>
+
+<MudButton Variant="Variant.Filled" Color="Color.Primary" @onclick="IncrementCount">Click Me</MudButton>
+
+@code {
+    private int CurrentCount => CounterState.Value.CurrentCount;
+
+    private void IncrementCount()
+    {
+        Dispatcher.Dispatch(new CounterIncrementAction());
+    }
+}

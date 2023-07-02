@@ -1,0 +1,71 @@
+﻿@page "/"
+
+<PageTitle>Home</PageTitle>
+
+<h1>Blazor POC</h1>
+
+<h2>State Management</h2>
+
+<p>
+    Shows how to use Fluxor (Redux) for state management, enabling complex interactions between components.
+    Fluxor also acts as a sort of service bus between components.
+</p>
+
+<br/>
+
+<p>
+    <ul style="list-style:disc">
+        <li>
+            State remains available when navigating between pages. Or not, if you want.
+        </li>
+        <li>
+            NavMenu also displays current count.
+        </li>
+        <li>
+            New weather forecasts are loaded on every tenth increment.
+        </li>
+        <li>
+            When weather forecasts are loading, the NavMenu item is bolded and colored.
+        </li>
+        <li>
+            A toast is shown when weather forecasts are loaded.
+        </li>
+        <li>
+            <b>All of these interactions are completely decoupled from the Razor components.</b>
+        </li>
+    </ul>
+</p>
+
+<br/>
+
+<h2>Server Calls</h2>
+
+<p>
+    <b>Razor components do not contain a single grpc service call.</b>
+</p>
+<br/>
+<p>
+    <ul style="list-style:disc">
+        <li>
+            The UI only deals with one method on a single grpc service to do EVERYTHING.
+        </li>
+        <li>
+            Communication to all services is initiated by publishing a message on the Bus (e.g. Bus.Send(ForecastQuery)). This message describes a command or query to be executed and contains all necessary properties.
+        </li>
+        <li>
+            All message types published on the Bus are transformed into a common GatewayEnvelope protobuf message.
+        </li>
+        <li>
+            The GatewayEnvelope is sent to a single endpoint in the GatewayGrpc service.
+        </li>
+        <li>
+            In the Gateway, the message is unpacked (e.g. ForecastQuery) and routed to an appropriate handler using the MediatR library.
+        </li>
+        <li>
+            The handler calls the appropriate service. The results of the service call are placed into a GatewayEnvelope and returned to the UI.
+        </li>
+        <li>
+            The Gateway is where all grpc service calls are made and defined. Any orchestration between services is done here. Mapping to view models is also done here as this is a UI level service.
+        </li>
+    </ul>
+</p>
