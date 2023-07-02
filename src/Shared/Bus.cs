@@ -12,12 +12,7 @@ public class Bus : IBus
         _mediator = mediator;
     }
 
-    public virtual Task<TResponse> Send<TResponse>(IRequest<TResponse> request, CancellationToken cancellationToken = default)
-    {
-        return _mediator.Send(request, cancellationToken);
-    }
-
-    public virtual Task Send<TRequest>(TRequest request, CancellationToken cancellationToken = default) where TRequest : IRequest
+    public virtual Task<TResponse> Send<TResponse>(IMessage<TResponse> request, CancellationToken cancellationToken = default)
     {
         return _mediator.Send(request, cancellationToken);
     }

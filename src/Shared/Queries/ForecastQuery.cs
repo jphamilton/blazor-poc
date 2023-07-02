@@ -1,6 +1,5 @@
-﻿using MediatR;
-using Shared.Models;
+﻿using Shared.Models;
 
 namespace Shared.Queries;
 
-public record ForecastQuery(DateTime StartDate) : IRequest<IEnumerable<WeatherForecast>>, IRemoteableRequest;
+public record ForecastQuery(DateTime StartDate) : IMessage<IEnumerable<WeatherForecast>>, IRemoteableRequest;

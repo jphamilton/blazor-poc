@@ -34,9 +34,6 @@ builder.Services.AddFluxor(options =>
     }
 });
 
-// Add services for Bus
-builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblyContaining<Program>());
-
 builder.Services.AddScoped<IBus,RemoteableBus>();
 builder.Services.AddScoped<GatewayPublisher>();
 
