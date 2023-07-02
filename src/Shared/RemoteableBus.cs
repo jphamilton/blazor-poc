@@ -12,7 +12,7 @@ public class RemoteableBus : IBus
 
     public async Task<TResponse> Send<TResponse>(IMessage<TResponse> request, CancellationToken cancellationToken = default)
     {
-        if (request is IRemoteableRequest remoteableRequest)
+        if (request is IRemoteableRequest<TResponse> remoteableRequest)
         {
             // Call the Gateway
             var response = await _gateway.Publish(remoteableRequest);

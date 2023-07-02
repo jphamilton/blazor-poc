@@ -2,4 +2,4 @@
 
 namespace Shared.Queries;
 
-public record ForecastQuery(DateTime StartDate) : IMessage<IEnumerable<WeatherForecast>>, IRemoteableRequest;
+public record ForecastQuery(DateTime StartDate) : IRemoteableRequest<IEnumerable<WeatherForecast>>;

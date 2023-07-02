@@ -5,7 +5,8 @@ using UI.Features.Counter.State;
 
 namespace UI.Features.Forecast.State;
 
-// Effects are similar to middleware. When an action is dispatched, if there is an effect that can handle that action, the effect will intercept.
+// Effects are similar to middleware. When an action is dispatched, if there is an effect that can handle that action,
+// the effect will intercept after the reducer has been called.
 public class ForecastEffects
 {
     private readonly IBus _bus;

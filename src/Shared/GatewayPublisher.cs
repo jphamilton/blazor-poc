@@ -11,7 +11,7 @@ public class GatewayPublisher
         _client = client;
     }
 
-    public async Task<GatewayEnvelope> Publish(IRemoteableRequest request)
+    public async Task<GatewayEnvelope> Publish<TResponse>(IRemoteableRequest<TResponse> request)
     {
         GatewayEnvelope message = Serializer.Serialize(request);
         return await _client.PublishAsync(message);
