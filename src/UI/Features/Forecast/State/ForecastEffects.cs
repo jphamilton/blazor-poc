@@ -27,11 +27,9 @@ public class ForecastEffects
          * 
          *  THE "SERVER" CALL
          * 
-         *  Not only are there no direct server calls from the UI, there are no indirect calls either!
          *  Here we are using a Bus to dispatch a request to the Gateway.
          *  
          */
-
         var forecasts = await _bus.Send(new ForecastQuery(DateTime.UtcNow));
 
         // update our app state with the results (see ForecastReducers.cs)

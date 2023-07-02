@@ -11,9 +11,12 @@ public class WeatherForecastService : ForecastService.ForecastServiceBase
         "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
     };
 
-    public override Task<ForecastList> GetForecasts(Empty request, ServerCallContext context)
+    public override async Task<ForecastList> GetForecasts(Empty request, ServerCallContext context)
     {
-        return Task.FromResult(new ForecastList
+        // simulate network latency
+        await Task.Delay(800);
+
+        return new ForecastList
         {
             Forecasts =
             {
@@ -24,6 +27,6 @@ public class WeatherForecastService : ForecastService.ForecastServiceBase
                     Summary = Summaries[Random.Shared.Next(Summaries.Length)]
                 })
             }
-        });
+        };
     }
 }

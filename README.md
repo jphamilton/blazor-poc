@@ -38,7 +38,6 @@ Instead of calling the gRPC service directly, an Action is dispatched using Flux
 @* Forecast.razor *@
 private void LoadForecasts()
 {
-    // Flow is Action -> Effect -> Reducer -> State -> UI
     Dispatcher.Dispatch(new ForecastGetAction());
 }
 ```

@@ -1,5 +1,6 @@
 using Fluxor;
 using Grpc.Gateway.Service;
+using MudBlazor;
 using MudBlazor.Services;
 using Shared;
 
@@ -9,7 +10,18 @@ var isDevelopment = builder.Environment.IsDevelopment();
 // Add services to the container.
 builder.Services.AddRazorPages();
 builder.Services.AddServerSideBlazor();
-builder.Services.AddMudServices();
+builder.Services.AddMudServices(config =>
+{
+    config.SnackbarConfiguration.PositionClass = Defaults.Classes.Position.BottomLeft;
+    config.SnackbarConfiguration.PreventDuplicates = false;
+    config.SnackbarConfiguration.NewestOnTop = false;
+    config.SnackbarConfiguration.ShowCloseIcon = true;
+    config.SnackbarConfiguration.VisibleStateDuration = 10000;
+    config.SnackbarConfiguration.HideTransitionDuration = 200;
+    config.SnackbarConfiguration.ShowTransitionDuration = 200;
+    config.SnackbarConfiguration.SnackbarVariant = Variant.Filled;
+});
+
 
 // Add Fluxor for state management
 builder.Services.AddFluxor(options =>

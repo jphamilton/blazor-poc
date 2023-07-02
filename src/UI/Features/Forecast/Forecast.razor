@@ -19,34 +19,30 @@ else
     <p>Loading forecasts from the Weather Service.</p>
 }
 
-@if (IsLoading)
-{
-    <p><em>Loading...</em></p>
-}
-else
-{
-    <p>
-        <MudDataGrid Items="@forecasts">
-            <Columns>
-                <PropertyColumn Property="x => x.Date">
-                    <CellTemplate>
-                        @context.Item.Date.ToShortDateString()
-                    </CellTemplate>
-                </PropertyColumn>
-                <PropertyColumn Property="x => x.TemperatureC" Title="Temp. (C)" />
-                <PropertyColumn Property="x => x.TemperatureF" Title="Temp. (F)" />
-                <PropertyColumn Property="x => x.Summary" />
-            </Columns>
-        </MudDataGrid>
-    </p>
-    <br/>
-    <p>
-        <div>
-            <MudButton Variant="Variant.Filled" Color="Color.Primary" @onclick="LoadForecasts">Refresh</MudButton>
-        </div>
-    </p>
+<MudOverlay Visible="IsLoading" DarkBackground="true" Absolute="true">
+    <MudProgressCircular Color="Color.Secondary" Indeterminate="true" Size="Size.Large" />
+</MudOverlay>
 
-}
+<p>
+    <MudDataGrid Items="@forecasts">
+        <Columns>
+            <PropertyColumn Property="x => x.Date">
+                <CellTemplate>
+                    @context.Item.Date.ToShortDateString()
+                </CellTemplate>
+            </PropertyColumn>
+            <PropertyColumn Property="x => x.TemperatureC" Title="Temp. (C)" />
+            <PropertyColumn Property="x => x.TemperatureF" Title="Temp. (F)" />
+            <PropertyColumn Property="x => x.Summary" />
+        </Columns>
+    </MudDataGrid>
+</p>
+<br />
+<p>
+    <div>
+        <MudButton Variant="Variant.Filled" Color="Color.Primary" @onclick="LoadForecasts">Refresh</MudButton>
+    </div>
+</p>
 
 @code {
     private List<WeatherForecast> forecasts => Store.Value.Forecasts;
@@ -66,8 +62,12 @@ else
 
     private void LoadForecasts()
     {
-        // Flow is Action -> Effect -> Reducer -> State -> UI
-        // Server is called in ForecastEffects
+        // Flow: Dispatch Action -> Reducer -> (Update State) -> Effect -> Dispatch Action -> Reducer -> (Update State)
+        
+        // First Reducer (ForecastReducers.cs) updates State to IsLoading = true, Initialized = false, UI is updated
+        // Effect (ForecastEffects.cs) calls the Bus to get the data
+        // ForecastSetAction is dispatched with the results
+        // Second Reducer (ForecastReducers.cs) updates State to IsLoading = false, Initialized = true, Forecasts = results, UI is updated
         Dispatcher.Dispatch(new ForecastGetAction());
     }
     

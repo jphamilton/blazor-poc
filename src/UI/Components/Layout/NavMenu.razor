@@ -15,14 +15,14 @@
 
 @code{
 
-    private string WeatherItemStyle => ForecastState.Value.IsLoading ? "font-weight:bold;color:var(--mud-palette-primary);" : "";
+    private string WeatherItemStyle => ForecastState.Value.IsLoading ? "font-weight:bold;color:var(--mud-palette-secondary);" : "";
 
     protected override void OnInitialized()
     {
         // Subscribe to ForecastSetAction and show a toast when forecasts are loaded
         SubscribeToAction<ForecastSetAction>((_) =>
         {
-            Snackbar.Add("Weather forecasts have been loaded", Severity.Success);
+            Snackbar.Add($"Weather forecasts have been loaded", Severity.Info);
         });
 
         base.OnInitialized();

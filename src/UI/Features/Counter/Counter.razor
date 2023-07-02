@@ -11,8 +11,34 @@
 
 <p role="status">Current count: @CurrentCount</p>
 
-<MudButton Variant="Variant.Filled" Color="Color.Primary" @onclick="IncrementCount">Click Me</MudButton>
+<p>
+    <MudButton Variant="Variant.Filled" Color="Color.Primary" @onclick="IncrementCount">Click Me</MudButton>
+</p>
 
+<br/>
+
+<p>
+    <ul style="list-style:disc">
+        <li>
+            State is maintained between page navigations.
+        </li>
+        <li>
+            Count is also updated in the NavMenu.
+        </li>
+        <li>
+            On every 10th increment, Weather forecasts are loaded.
+        </li>
+        <li>
+            When forecasts are loading, the Weather Forecast menu item is bolded and displayed purple.
+        </li>
+        <li>
+            When forecasts are loaded, a toast is displayed.
+        </li>
+        <li>
+            All of these interactions are completely decoupled from any razor components.
+        </li>
+    </ul>
+</p>
 @code {
     private int CurrentCount => CounterState.Value.CurrentCount;
 
