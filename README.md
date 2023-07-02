@@ -4,7 +4,7 @@ This POC explores state management with Fluxor (Redux) and handling all service 
 
 To run, configure solution to start multiple projects: Forecasts, Gateway, and UI.
 
-![Data Flow](/img/flow.jpg?raw=true "Data Flow")
+![Data Flow](https://github.com/jphamilton/blazor-poc/blob/master/img/flow.png?raw=true "Data Flow")
 
 ## Fluxor
 The Fluxor portion is adapted from the [Advanced Blazor State Management Using Fluxor](https://dev.to/mr_eking/advanced-blazor-state-management-using-fluxor-part-1-696) by Eric King.
