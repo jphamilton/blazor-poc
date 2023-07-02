@@ -22,8 +22,8 @@ service Gateway {
 }
 
 message GatewayEnvelope {
-  string Type = 1;  // C# type name of the request
-  string Body = 2;  // Serialized MediatR request
+  string Type = 1;
+  bytes Body = 2;
 }
 ```
 
