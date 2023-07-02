@@ -1,6 +1,4 @@
 ﻿using Grpc.Gateway.Service;
-using Newtonsoft.Json;
-using System.Text;
 
 namespace Shared;
 
@@ -16,9 +14,6 @@ public class GatewayPublisher
     public async Task<GatewayEnvelope> Publish(IRemoteableRequest request)
     {
         GatewayEnvelope message = Serializer.Serialize(request);
-        var result = await _client.PublishAsync(message);
-        return result;
+        return await _client.PublishAsync(message);
     }
-
-    
 }

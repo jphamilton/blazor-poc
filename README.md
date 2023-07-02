@@ -32,34 +32,18 @@ orchestrating service calls, mapping protobuf back to Models, etc. The response 
 The Gateway knows about all of the available services, but the UI only knows about the Gateway.
 
 ### Bus ###
-Instead of calling the gRPC service directly, an Action is dispatched using Fluxor.
-
-```
-@* Forecast.razor *@
-private void LoadForecasts()
-{
-    Dispatcher.Dispatch(new ForecastGetAction());
-}
-```
-
-In the POC, ForecastGetAction is "intercepted" in ForecastEffect, which in turn uses the Bus to send a ForecastQuery.
+Instead of calling the gRPC service directly, a Bus is used.
 
 ```
 // ForecastQuery.cs
 public record ForecastQuery(DateTime StartDate) : IRequest<IEnumerable<WeatherForecast>>, IRemoteableRequest; // MediatR request
 
-// ForecastEffects.cs
-[EffectMethod]
-public async Task LoadForecasts(ForecastGetAction _, IDispatcher dispatcher)
-{
-    var forecasts = await _bus.Send(new ForecastQuery(DateTime.UtcNow));
-
-    // update our app state with the results (see ForecastReducers.cs)
-    dispatcher.Dispatch(new ForecastSetAction(forecasts.ToList()));
-}
+// elsewhere
+var forecasts = await _bus.Send(new ForecastQuery(DateTime.UtcNow));
 ```
 
-The Bus on the UI side simply calls the GatwayPublisher, which is a simple wrapper around the gRPC client.
+The Bus on the UI side calls the GatwayPublisher, which is a simple wrapper around the gRPC client. This could be extended
+to include identity, claims, roles, etc.
 
 ```
 public class RemoteableBus : Bus
@@ -88,4 +72,22 @@ public class RemoteableBus : Bus
         return await base.Send(request, cancellationToken);
     }
 }
+
+public class GatewayPublisher
+{
+    private readonly Gateway.GatewayClient _client;
+
+    public GatewayPublisher(Gateway.GatewayClient client)
+    {
+        _client = client;
+    }
+
+    public async Task<GatewayEnvelope> Publish(IRemoteableRequest request)
+    {
+        GatewayEnvelope message = Serializer.Serialize(request);
+        return await _client.PublishAsync(message);
+    }
+}
+
 ```
+
