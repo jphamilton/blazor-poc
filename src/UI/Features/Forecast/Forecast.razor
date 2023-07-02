@@ -28,7 +28,7 @@ else
         <Columns>
             <PropertyColumn Property="x => x.Date">
                 <CellTemplate>
-                    @context.Item.Date.ToShortDateString()
+                    @context.Item.Date.ToString("yyyy-MM-dd HH:mm:ss")
                 </CellTemplate>
             </PropertyColumn>
             <PropertyColumn Property="x => x.TemperatureC" Title="Temp. (C)" />
